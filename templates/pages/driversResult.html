@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <div class="row">
+    <h1>Drivers by year result</h1>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Driver Number</th>
+      <th scope="col">Code</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for driver in drivers %}
+    <tr>
+      <td>{{driver.permanentNumber}}</td>
+      <td>{{driver.code}}</td>
+      <td>{{driver.givenName}}</td>
+      <td>{{driver.familyName}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %}
+  <h1>Test</h1>
+  {% for driver in drivers %} 
+    {% if driver == "LEC" %}
+      <p>{{driver}} the greatest</p>
+    {% else %}
+      <p>{{driver}}</p>
+    {% endif %} 
+  {% endfor %}
+{% endblock %}
