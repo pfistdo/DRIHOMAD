@@ -8,6 +8,10 @@ app.config.from_object('config_flask') #load config
 drivers2 = ["VER", "LEC", "SAI"] #test only
 
 @app.route("/")
+def home():
+    return render_template("pages/index.html")
+
+@app.route("/drivers")
 def driver():
     return render_template("pages/drivers.html")
 
@@ -23,7 +27,7 @@ def driversByYear() -> str:
     return render_template(template_name_or_list='pages/driversResult.html', drivers=drivers)
 
 @app.route("/test") #test only 
-def home():
+def test():
     return render_template("test.html", title="Website title", drivers=drivers2)
 
 if __name__ == "__main__":
