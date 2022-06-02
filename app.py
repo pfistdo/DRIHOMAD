@@ -73,9 +73,8 @@ def driversByYear() -> str:
             averageHomePlacement = totalHomePlacements / len(homePlacements)
 
             # add driver to data frame
-            resultFrame = resultFrame.append(resultFrame.append(
-                {'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, ignore_index=True))
-    resultFrame = resultFrame.drop_duplicates()
+            new_row = pd.DataFrame({'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, index=[0])
+            resultFrame = pd.concat([new_row,resultFrame.loc[:]]).reset_index(drop=True)
     print(resultFrame.to_string())
     return render_template(template_name_or_list='pages/driversResult.html', drivers=drivers)
 
