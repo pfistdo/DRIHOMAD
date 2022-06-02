@@ -22,7 +22,6 @@ def driver():
 
 @app.route('/drivers/result', methods=['GET'])
 def driversByYear() -> str:
-    # app.logger.info(str(request.args.get('year')))
 
     ds = DriverService()
     year = str(request.args.get('year'))
@@ -31,36 +30,50 @@ def driversByYear() -> str:
     drivers = ds.getDriversOfYear(year)
 
     # get gps of year
-    races = ds.getRacesOfYear(year)
+    #races = ds.getRacesOfYear(year)
 
     # load demonyms to convert nationality to country
     data = pd.read_csv(r'resources/demonyms.csv')
     df = pd.DataFrame(data)
     df = df.drop_duplicates()
 
-    result_cols = ["Driver", "Average placement", "Home placement"]
-    resultFrame = pd.DataFrame(columns=result_cols)
+    resultFrame = pd.DataFrame(columns=['Driver', 'Average placement', 'Home placement'])
 
     for driver in drivers:
+        hadHomeRace = False
         placements = []
-        homePlacement = 0
+        homePlacements = []
         allPlacements = ds.getAllPlacements(year, driver.get('driverId'))
-        print("========================================")
-        #print(f"{driver.get('familyName')}{':'}{driver.get('driverId')}")
-        #print(allPlacements)
+        # print("========================================")
+        # print(f"{driver['familyName']}{':'}{driver['driverId']}")
         if allPlacements:
-            for race in races:
-                #placement = ds.getSinglePlacement(year, driver.get('driverId'), race.get('round'))
-                #print(f"{'Placement: '}{allPlacements[int(race.get('round'))]['Results'][0]['position']}")
-                if race['Circuit']['Location'].get('country') == df.loc[df['Origin'] == driver['nationality'], 'Region'].item():
-                    #homePlacement = placement
-                    homePlacement = ds.getSinglePlacement(year, driver.get('driverId'), race.get('round'))
-                #placements.append(placement)
-            # if len(placements) < 21:
-            #     for placement in placements:
-            #         print(f"{driver.get('familyName')}{' placed '}{placement}")
-            placements = []
-            #df.insert(driver.get('familyName'), "Age", [21, 23, 24, 21], True)
+            for race in allPlacements:
+                placements.append(race['Results'][0]['position'])
+                if race['Circuit']['Location']['country'] == df.loc[df['Origin'] == driver['nationality'], 'Region'].item():
+                    homePlacements.append(race['Results'][0]['position'])
+                    hadHomeRace = True
+                
+            if len(placements) < 22:
+                print(f"{driver['familyName']}{' completed fewer races than expected!'}")
+                # for i in range(len(placements)):
+                #     print(f"{i}{': '}{placements[i]}")
+
+        totalPlacements = 0
+        totalHomePlacements = 0
+        if hadHomeRace:
+            for placement in placements:
+                totalPlacements += int(placement)
+            averagePlacement = totalPlacements / len(placements)
+            for placement in homePlacements:
+                totalHomePlacements += int(placement)
+            averageHomePlacement = totalHomePlacements / len(homePlacements)
+            #print(f"{'Adding driver:'}{driver['familyName']}")
+            resultFrame = resultFrame.append(resultFrame.append({'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, ignore_index=True))
+        placements = []
+        homePlacements = []
+        hadHomeRace = False
+    resultFrame = resultFrame.drop_duplicates()
+    print(resultFrame.to_string())
     return render_template(template_name_or_list='pages/driversResult.html', drivers=drivers)
 
 
