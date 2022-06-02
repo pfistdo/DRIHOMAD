@@ -37,41 +37,44 @@ def driversByYear() -> str:
     df = pd.DataFrame(data)
     df = df.drop_duplicates()
 
-    resultFrame = pd.DataFrame(columns=['Driver', 'Average placement', 'Home placement'])
+    # dataframe for results drivers
+    resultFrame = pd.DataFrame(
+        columns=['Driver', 'Average placement', 'Home placement'])
 
     for driver in drivers:
         hadHomeRace = False
-        placements = []
-        homePlacements = []
-        allPlacements = ds.getAllPlacements(year, driver.get('driverId'))
-        # print("========================================")
-        # print(f"{driver['familyName']}{':'}{driver['driverId']}")
-        if allPlacements:
+        placements = []      # placements of current driver
+        homePlacements = []  # placements at home GP of current driver
+        allPlacements = ds.getAllPlacements(year, driver.get('driverId')) # unparsed results from REST API
+        if allPlacements: # if driver drove a race this season
             for race in allPlacements:
-                placements.append(race['Results'][0]['position'])
+                placements.append(race['Results'][0]['position']) # add placement to list of placements
+                # check if race was home GP for current driver
                 if race['Circuit']['Location']['country'] == df.loc[df['Origin'] == driver['nationality'], 'Region'].item():
-                    homePlacements.append(race['Results'][0]['position'])
+                    homePlacements.append(race['Results'][0]['position']) # add placement to list of home placements
                     hadHomeRace = True
-                
+
+            # unneeded? test only
             if len(placements) < 22:
-                print(f"{driver['familyName']}{' completed fewer races than expected!'}")
+                print(
+                    f"{driver['familyName']}{' completed fewer races than expected!'}")
                 # for i in range(len(placements)):
                 #     print(f"{i}{': '}{placements[i]}")
 
-        totalPlacements = 0
-        totalHomePlacements = 0
+        # calculate average placements for drivers with home GP
         if hadHomeRace:
+            totalPlacements = 0
+            totalHomePlacements = 0
             for placement in placements:
                 totalPlacements += int(placement)
             averagePlacement = totalPlacements / len(placements)
             for placement in homePlacements:
                 totalHomePlacements += int(placement)
             averageHomePlacement = totalHomePlacements / len(homePlacements)
-            #print(f"{'Adding driver:'}{driver['familyName']}")
-            resultFrame = resultFrame.append(resultFrame.append({'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, ignore_index=True))
-        placements = []
-        homePlacements = []
-        hadHomeRace = False
+
+            # add driver to data frame
+            resultFrame = resultFrame.append(resultFrame.append(
+                {'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, ignore_index=True))
     resultFrame = resultFrame.drop_duplicates()
     print(resultFrame.to_string())
     return render_template(template_name_or_list='pages/driversResult.html', drivers=drivers)
