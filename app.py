@@ -37,21 +37,28 @@ def driversByYear() -> str:
     df = pd.DataFrame(data)
     df = df.drop_duplicates()
 
-    # dataframe for results drivers
-    resultFrame = pd.DataFrame(
+    # dataframe for average and home placements
+    driverPlacementAvgs = pd.DataFrame(
         columns=['Driver', 'Average placement', 'Home placement'])
+
+    # dataframe for all placements of drivers with home GP
+    driverPlacements = pd.DataFrame(
+        columns=['Driver', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'])
 
     for driver in drivers:
         hadHomeRace = False
         placements = []      # placements of current driver
         homePlacements = []  # placements at home GP of current driver
-        allPlacements = ds.getAllPlacements(year, driver.get('driverId')) # unparsed results from REST API
-        if allPlacements: # if driver drove a race this season
+        allPlacements = ds.getAllPlacements(year, driver.get(
+            'driverId'))  # unparsed results from REST API
+        if allPlacements:  # if driver drove a race this season
             for race in allPlacements:
-                placements.append(race['Results'][0]['position']) # add placement to list of placements
+                # add placement to list of placements
+                placements.append(race['Results'][0]['position'])
                 # check if race was home GP for current driver
                 if race['Circuit']['Location']['country'] == df.loc[df['Origin'] == driver['nationality'], 'Region'].item():
-                    homePlacements.append(race['Results'][0]['position']) # add placement to list of home placements
+                    # add placement to list of home placements
+                    homePlacements.append(race['Results'][0]['position'])
                     hadHomeRace = True
 
             # unneeded? test only
@@ -73,10 +80,19 @@ def driversByYear() -> str:
             averageHomePlacement = totalHomePlacements / len(homePlacements)
 
             # add driver to data frame
-            new_row = pd.DataFrame({'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, index=[0])
-            resultFrame = pd.concat([new_row,resultFrame.loc[:]]).reset_index(drop=True)
-    print(resultFrame.to_string())
-    return render_template(template_name_or_list='pages/driversResult.html', result=resultFrame)
+            new_row = pd.DataFrame(
+                {'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, index=[0])
+            driverPlacementAvgs = pd.concat(
+                [new_row, driverPlacementAvgs.loc[:]]).reset_index(drop=True)
+
+            # add placements to data frame
+            new_row = pd.DataFrame({'Driver': driver['familyName'], '1': placements[0], '2': placements[1], '3': placements[2], '4': placements[3], '5': placements[4], '6': placements[5], '7': placements[6], '8': placements[7], '9': placements[8], '10': placements[9], '11': placements[10],
+                                   '12': placements[11], '13': placements[12], '14': placements[13], '15': placements[14], '16': placements[15], '17': placements[16], '18': placements[17], '19': placements[18], '20': placements[19], '21': placements[20], '22': placements[21]}, index=[0])
+            driverPlacements = pd.concat(
+                [new_row, driverPlacements.loc[:]]).reset_index(drop=True)
+    print(driverPlacementAvgs.to_string())
+    print(driverPlacements.to_string())
+    return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=driverPlacements)
 
 
 @app.route("/test")  # test only
