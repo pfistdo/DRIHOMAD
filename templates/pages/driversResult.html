@@ -8,19 +8,17 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">Driver Number</th>
-      <th scope="col">Code</th>
-      <th scope="col">First name</th>
-      <th scope="col">Last name</th>
+      <th scope="col">Driver</th>
+      <th scope="col">Average placement</th>
+      <th scope="col">Home placement</th>
     </tr>
   </thead>
   <tbody>
-    {% for driver in drivers %}
+    {% for ind in result.index: %}
     <tr>
-      <td>{{driver.permanentNumber}}</td>
-      <td>{{driver.code}}</td>
-      <td>{{driver.givenName}}</td>
-      <td>{{driver.familyName}}</td>
+      <td>{{result['Driver'][ind]}}</td>
+      <td>{{result['Average placement'][ind]}}</td>
+      <td>{{result['Home placement'][ind]}}</td>
     </tr>
     {% endfor %}
   </tbody>
