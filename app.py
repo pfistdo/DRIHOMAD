@@ -6,9 +6,6 @@ from src.driver_service import DriverService
 app = Flask(__name__)
 app.config.from_object('config_flask')  # load config
 
-drivers2 = ["VER", "LEC", "SAI"]  # test only
-
-
 @app.route("/")
 def home():
     return render_template("pages/index.html")
@@ -21,7 +18,6 @@ def driver():
 
 @app.route('/drivers/result', methods=['GET'])
 def driversByYear() -> str:
-
     ds = DriverService()
     year = str(request.args.get('year'))
 
@@ -85,8 +81,15 @@ def driversByYear() -> str:
     # create DF with all placements
     placementsFrame = pd.DataFrame(driverPlacements, columns=driverPlacementsCols)
     placementsFrame.columns = driverPlacementsCols
-    return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame)
-    #return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame, graph=ds.plot())
+    #return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame)
+    graphs = []
+    for i in range(len(placementsFrame)):
+        graphs.append(ds.createGraph(placementsFrame, i))
+    print(f"{'Data 0: '}{graphs[0]}")
+    print("=============================")
+    print(f"{'Data 1: '}{graphs[1]}")
+
+    return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame, graphs=graphs)
 
 
 if __name__ == "__main__":

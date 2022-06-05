@@ -4,6 +4,8 @@ import pandas as pd
 import base64
 from io import BytesIO
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 class DriverService:
@@ -41,23 +43,18 @@ class DriverService:
         placement = json.loads(response.text)
         return placement['MRData']['RaceTable']['Races']
 
-    def plot(self):
-        df=pd.DataFrame({'x_values': range(1,11), 'y_values': np.random.randn(10) })
-
-        left = [1, 2, 3, 4, 5]
+    def createGraph(self, df, row):
         # heights of bars
-        height = [10, 20, 36, 40, 5]
-        # labels for bars
-        tick_label = ['one', 'two', 'three', 'four', 'five']
-        # plotting a bar chart
-        plt.bar(left, height, tick_label=tick_label, width=0.8, color=['red', 'green'])
+        #height = df.iloc[row, 1:]
 
-        # naming the y-axis
-        plt.ylabel('y - axis')
-        # naming the x-axis
-        plt.xlabel('x - axis')
+        height = [5, 11, 9, 8, 5, 7, 10, 14, 7, 18, 6, 15, 5, 3, 10, 20, 14]
+        bars = tuple(range(len(height)))
+        y_pos = np.arange(len(bars))
+
+        # Create bars
+        plt.bar(y_pos, height)
         # plot title
-        plt.title('My bar chart!')
+        plt.title(df.iloc[row]['Driver'])
 
         buf = BytesIO()
         plt.savefig(buf, format="png")

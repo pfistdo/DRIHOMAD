@@ -24,5 +24,7 @@
     {% endfor %}
   </tbody>
 </table>
-<img alt="driver graph" src='data:image/png;base64,{{ graph }}'/>
+{% for graph in graphs: %}
+  <img alt="driver graph" src='data:image/png;base64,{{ graph }}'/>
+  {% endfor %}
 {% endblock %}
