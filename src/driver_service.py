@@ -47,12 +47,12 @@ class DriverService:
         # heights of bars
         #height = df.iloc[row, 1:]
 
-        height = [5, 11, 9, 8, 5, 7, 10, 14, 7, 18, 6, 15, 5, 3, 10, 20, 14]
-        bars = tuple(range(len(height)))
-        y_pos = np.arange(len(bars))
+        placements = [5, 11, 9, 8, 5, 7, 10, 14, 7, 18, 6, 15, 5, 3, 10, 20, 14]
+        races = tuple(range(len(placements)))
+        y_pos = np.arange(len(races))
 
         # Create bars
-        plt.bar(y_pos, height)
+        plt.bar(y_pos, placements)
         # plot title
         plt.title(df.iloc[row]['Driver'])
 
