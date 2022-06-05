@@ -1,5 +1,10 @@
 import json
 import requests
+import pandas as pd
+import base64
+from io import BytesIO
+import numpy as np
+import matplotlib.pyplot as plt
 
 class DriverService:
     def __init__(self):
@@ -35,3 +40,30 @@ class DriverService:
         response = requests.get(url)
         placement = json.loads(response.text)
         return placement['MRData']['RaceTable']['Races']
+
+    def plot(self):
+        df=pd.DataFrame({'x_values': range(1,11), 'y_values': np.random.randn(10) })
+
+        left = [1, 2, 3, 4, 5]
+        # heights of bars
+        height = [10, 20, 36, 40, 5]
+        # labels for bars
+        tick_label = ['one', 'two', 'three', 'four', 'five']
+        # plotting a bar chart
+        plt.bar(left, height, tick_label=tick_label, width=0.8, color=['red', 'green'])
+
+        # naming the y-axis
+        plt.ylabel('y - axis')
+        # naming the x-axis
+        plt.xlabel('x - axis')
+        # plot title
+        plt.title('My bar chart!')
+
+        buf = BytesIO()
+        plt.savefig(buf, format="png")
+
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+
+        return data
+
+    # return render_template('pages/plot.html', graph=data)
