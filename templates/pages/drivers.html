@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="display-4">Welcome to //DRIHOMAD!</h1>
+<h1 class="display-4">//DRIHOMAD!</h1>
 <p class="lead">The unique data analyzer to discover if a formula one driver has a home advantage!</p>
 <hr class="my-4">
-<p style="text-align: center;">By defining a season it will show you all the drivers who had a home grand-prix
-  in that season and if they had a better performance than their average season performance.</p>
 <form action="{{ url_for('driversByYear') }}" method="GET">
   <div class="mb-3">
     <label for="cars">Choose a season:</label>

@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container">
   <div class="row">
+    <h1>//DRIHOMAD</h1>
     <h1>Drivers by year result</h1>
   </div>
 </div>
@@ -12,6 +13,8 @@
       <th scope="col">Driver</th>
       <th scope="col">Average placement</th>
       <th scope="col">Home placement</th>
+      <th scope="col">Home advantage?</th>
+      <th scope="col">Detailed results</th>
     </tr>
   </thead>
   <tbody>
@@ -20,9 +23,40 @@
       <td>{{result['Driver'][ind]}}</td>
       <td>{{result['Average placement'][ind]}}</td>
       <td>{{result['Home placement'][ind]}}</td>
+      <td>
+      {% if result['Average placement'][ind] > result['Home placement'][ind] %}
+        Yes
+      {% else %}
+        No
+      {% endif %}
+      </td>
+      <td>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+          Show details
+        </button>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-<img alt="driver graph" src='data:image/png;base64,{{ graph }}'/>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img alt="driver graph" src='data:image/png;base64,{{ graph }}'/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

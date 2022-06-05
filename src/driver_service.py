@@ -50,12 +50,12 @@ class DriverService:
         # labels for bars
         tick_label = ['one', 'two', 'three', 'four', 'five']
         # plotting a bar chart
-        plt.bar(left, height, tick_label=tick_label, width=0.8, color=['red', 'green'])
+        plt.bar(left, height, tick_label=tick_label, width=0.8, color=['red'])
 
         # naming the y-axis
-        plt.ylabel('y - axis')
+        plt.ylabel('Placement')
         # naming the x-axis
-        plt.xlabel('x - axis')
+        plt.xlabel('Grand Prix Number')
         # plot title
         plt.title('My bar chart!')
 
