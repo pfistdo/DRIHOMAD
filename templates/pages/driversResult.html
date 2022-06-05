@@ -21,8 +21,8 @@
     {% for ind in result.index: %}
     <tr>
       <td>{{result['Driver'][ind]}}</td>
-      <td>{{result['Average placement'][ind]}}</td>
-      <td>{{result['Home placement'][ind]}}</td>
+      <td>{{result['Average placement'][ind]|round|int}}</td>
+      <td>{{result['Home placement'][ind]|round|int}}</td>
       <td>
       {% if result['Average placement'][ind] > result['Home placement'][ind] %}
         Yes
