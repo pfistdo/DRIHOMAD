@@ -14,7 +14,7 @@
       <th scope="col">Average placement</th>
       <th scope="col">Home placement</th>
       <th scope="col">Home advantage?</th>
-      <th scope="col">Detailed results</th>
+      <th scope="col">Detailed resulasdasdasdts</th>
     </tr>
   </thead>
   <tbody>
@@ -24,7 +24,7 @@
       <td>{{result['Average placement'][ind]|round|int}}</td>
       <td>{{result['Home placement'][ind]|round|int}}</td>
       <td>
-      {% if result['Average placement'][ind] > result['Home placement'][ind] %}
+      {% if result['Average placement'][ind]|round|int > result['Home placement'][ind]|round|int %}
         Yes
       {% else %}
         No
