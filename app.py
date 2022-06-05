@@ -34,7 +34,7 @@ def driversByYear() -> str:
 
     # dataframe for average and home placements
     driverPlacementAvgs = pd.DataFrame(
-        columns=['Driver', 'Average placement', 'Home placement'])
+        columns=['DriverId', 'Driver', 'Average placement', 'Home placement'])
 
     # variables to save placements of drivers
     driverPlacementsCols = ['Driver']
@@ -70,7 +70,7 @@ def driversByYear() -> str:
 
             # add driver to data frame
             new_row = pd.DataFrame(
-                {'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, index=[0])
+                {'DriverId': driver['driverId'], 'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, index=[0])
             driverPlacementAvgs = pd.concat(
                 [new_row, driverPlacementAvgs.loc[:]]).reset_index(drop=True)
 
@@ -85,6 +85,7 @@ def driversByYear() -> str:
     graphs = []
     for i in range(len(placementsFrame)):
         graphs.append(ds.createGraph(placementsFrame, i))
+    graphs = graphs[::-1] # invert array
     print(f"{'Data 0: '}{graphs[0]}")
     print("=============================")
     print(f"{'Data 1: '}{graphs[1]}")
