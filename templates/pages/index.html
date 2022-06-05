@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+  <video autoplay muted loop id="Video">
+    <source src="static\video\video.mp4" type="video/mp4">
+  </video>
+
+  <div class="content">
+    <h1 class="display-4">Welcome to //DRIHOMAD!</h1>
+  <p class="lead">The unique data analyzer to discover if a formula one driver has a home advantage!</p>
+  <hr class="my-4">
+  <p style="text-align: center;">By defining a season it will show you all the drivers who had a home grand-prix
+    in that season and if they had a better performance than their average season performance.</p>
+    <div class="mb-3">
+      <p class="lead">
+          <a class="btn btn-primary btn-lg" href="drivers" role="button">Lights out - And away we go!</a>
+      </p>
+    </div>
+  </div>
+
+  <style>
+      #Video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+      }
+
+      .content {
+        position: fixed;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        color: #f1f1f1;
+        width: 100%;
+        padding: 0px;
+      }
+
+  </style>
+  {% endblock %}
