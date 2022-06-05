@@ -32,7 +32,7 @@ def driversByYear() -> str:
     races = ds.getRacesOfYear(year)
 
     # load demonyms to convert nationality to country
-    placementsFrame = pd.read_csv('resources/demonyms.csv')
+    placementsFrame = pd.read_csv('static/resources/demonyms.csv')
     df = pd.DataFrame(placementsFrame)
     df = df.drop_duplicates()
 
