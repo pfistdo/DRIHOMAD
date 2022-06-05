@@ -47,6 +47,7 @@ class DriverService:
         height = list(map(int,df[row][1:]))
         bars = tuple(range(1,len(height)+1))
         y_pos = np.arange(len(bars))
+        plt.figure()
         plt.bar(y_pos, height)
         plt.xticks(y_pos, bars)
         plt.yticks(range(1,21), range(1,21))
