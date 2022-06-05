@@ -44,23 +44,15 @@ class DriverService:
         return placement['MRData']['RaceTable']['Races']
 
     def createGraph(self, df, row):
-        # heights of bars
-        #height = df.iloc[row, 1:]
-
-        placements = [5, 11, 9, 8, 5, 7, 10, 14, 7, 18, 6, 15, 5, 3, 10, 20, 14]
-        races = tuple(range(len(placements)))
-        y_pos = np.arange(len(races))
-
-        # Create bars
-        plt.bar(y_pos, placements)
-        # plot title
-        plt.title(df.iloc[row]['Driver'])
+        height = list(map(int,df[row][1:]))
+        bars = tuple(range(1,len(height)+1))
+        y_pos = np.arange(len(bars))
+        plt.bar(y_pos, height)
+        plt.xticks(y_pos, bars)
+        plt.yticks(range(1,21), range(1,21))
+        plt.title(df[row][:1])
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
-
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
-
         return data
-
-    # return render_template('pages/plot.html', graph=data)

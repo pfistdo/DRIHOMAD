@@ -24,15 +24,15 @@ def driversByYear() -> str:
     # get drivers of year
     drivers = ds.getDriversOfYear(year)
 
-    # get gps of year
+    # get gps(Grands Prix) of year
     races = ds.getRacesOfYear(year)
 
     # load demonyms to convert nationality to country
     placementsFrame = pd.read_csv('static/resources/demonyms.csv')
-    df = pd.DataFrame(placementsFrame)
-    df = df.drop_duplicates()
+    demonyms = pd.DataFrame(placementsFrame)
+    demonyms = demonyms.drop_duplicates()
 
-    # dataframe for average and home placements
+    # dataframe(DF) for average and home placements
     driverPlacementAvgs = pd.DataFrame(
         columns=['DriverId', 'Driver', 'Average placement', 'Home placement'])
 
@@ -42,6 +42,7 @@ def driversByYear() -> str:
         driverPlacementsCols.append(str(i+1))
     driverPlacements = []
 
+    # 
     for driver in drivers:
         hadHomeRace = False
         placements = []      # placements of current driver
@@ -52,7 +53,7 @@ def driversByYear() -> str:
                 # add placement to list of placements
                 placements.append(race['Results'][0]['position'])
                 # check if race was home GP for current driver
-                if race['Circuit']['Location']['country'] == df.loc[df['Origin'] == driver['nationality'], 'Region'].item():
+                if race['Circuit']['Location']['country'] == demonyms.loc[demonyms['Origin'] == driver['nationality'], 'Region'].item():
                     # add placement to list of home placements
                     homePlacements.append(race['Results'][0]['position'])
                     hadHomeRace = True
@@ -68,7 +69,7 @@ def driversByYear() -> str:
                 totalHomePlacements += int(placement)
             averageHomePlacement = totalHomePlacements / len(homePlacements)
 
-            # add driver to data frame
+            # add driver to DF
             new_row = pd.DataFrame(
                 {'DriverId': driver['driverId'], 'Driver': driver['familyName'], 'Average placement': averagePlacement, 'Home placement': averageHomePlacement}, index=[0])
             driverPlacementAvgs = pd.concat(
@@ -81,15 +82,12 @@ def driversByYear() -> str:
     # create DF with all placements
     placementsFrame = pd.DataFrame(driverPlacements, columns=driverPlacementsCols)
     placementsFrame.columns = driverPlacementsCols
-    #return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame)
+    
+    # create graph with placements for every driver
     graphs = []
-    for i in range(len(placementsFrame)):
-        graphs.append(ds.createGraph(placementsFrame, i))
-    graphs = graphs[::-1] # invert array
-    print(f"{'Data 0: '}{graphs[0]}")
-    print("=============================")
-    print(f"{'Data 1: '}{graphs[1]}")
-
+    for i in range(len(driverPlacements)):
+        graphs.append(ds.createGraph(driverPlacements, i))
+    graphs = graphs[::-1] # invert array to match driverPlacementAvgs position
     return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame, graphs=graphs)
 
 
