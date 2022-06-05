@@ -1,11 +1,5 @@
-from dataclasses import dataclass
 from flask import Flask, render_template, request
 import pandas as pd
-import base64
-from io import BytesIO
-import numpy as np
-from pyparsing import col
-
 
 from src.driver_service import DriverService
 
@@ -38,7 +32,7 @@ def driversByYear() -> str:
     races = ds.getRacesOfYear(year)
 
     # load demonyms to convert nationality to country
-    placementsFrame = pd.read_csv(r'resources/demonyms.csv')
+    placementsFrame = pd.read_csv('resources/demonyms.csv')
     df = pd.DataFrame(placementsFrame)
     df = df.drop_duplicates()
 
