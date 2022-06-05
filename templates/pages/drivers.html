@@ -1,16 +1,20 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block content %}
-<div class="row">
-  <h1>Drivers by year test. DRIHOMAD</h1>
-</div>
+<h1 class="display-4">Welcome to //DRIHOMAD!</h1>
+<p class="lead">The unique data analyzer to discover if a formula one driver has a home advantage!</p>
+<hr class="my-4">
+<p style="text-align: center;">By defining a season it will show you all the drivers who had a home grand-prix
+  in that season and if they had a better performance than their average season performance.</p>
+<form action="{{ url_for('driversByYear') }}" method="GET">
+  <div class="mb-3">
+    <label for="cars">Choose a season:</label>
 
-<div class="row">
-  <form action="{{ url_for('driversByYear') }}" method="GET">
-    <div class="mb-3">
-      <label for="year" class="form-label">Year</label>
-      <input type="text" class="form-control" name="year" id="year" />
-    </div>
-    <input class="btn btn-primary" type="submit" value="Submit" />
-  </form>
-</div>
+    <select class="form-select" name="year" id="year">
+      {% for x in range(1950, 2022) %}
+        <option value="{{ x }}">{{ x }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <input class="btn btn-primary" type="submit" value="Submit" />
+</form>
 {% endblock %}

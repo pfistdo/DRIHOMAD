@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request
 import pandas as pd
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
+import numpy as np
 
 
 from src.driver_service import DriverService
@@ -94,6 +98,37 @@ def driversByYear() -> str:
     print(driverPlacements.to_string())
     return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=driverPlacements)
 
+@app.route('/plot')
+def plot():
+
+    df=pd.DataFrame({'x_values': range(1,11), 'y_values': np.random.randn(10) })
+
+    left = [1, 2, 3, 4, 5]
+    # heights of bars
+    height = [10, 20, 36, 40, 5]
+    # labels for bars
+    tick_label = ['one', 'two', 'three', 'four', 'five']
+    # plotting a bar chart
+    plt.bar(left, height, tick_label=tick_label, width=0.8, color=['red', 'green'])
+
+    # naming the y-axis
+    plt.ylabel('y - axis')
+    # naming the x-axis
+    plt.xlabel('x - axis')
+    # plot title
+    plt.title('My bar chart!')
+
+    buf = BytesIO()
+    plt.savefig(buf, format="png")
+
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+
+    print(data)
+
+    return render_template('pages/plot.html', graph=data)
+
+if __name__ == '__main__':
+   app.run()
 
 @app.route("/test")  # test only
 def test():

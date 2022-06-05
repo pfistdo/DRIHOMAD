@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">DriHomAd</h1>
+    <p class="lead">Choose a season</p>
+    <hr class="my-4">
+    <div class="form-group">
+        <label for="inputSeason">Choose your season</label>
+        <select class="form-control" id="inputSeason">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    <p class="lead">
+        <a class="btn btn-secondary btn-lg" href="index.html" role="button">Back to the start</a>
+        <a class="btn btn-primary btn-lg" href="results.html" role="button">Show me the results</a>
+    </p>
+</div>
+
+<div class="row">
+  <form action="{{ url_for('driversByYear') }}" method="GET">
+    <div class="mb-3">
+      <label for="year" class="form-label">Year</label>
+      <input type="text" class="form-control" name="year" id="year" />
+    </div>
+    <input class="btn btn-primary" type="submit" value="Submit" />
+  </form>
+</div>
+{% endblock %}
