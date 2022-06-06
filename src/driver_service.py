@@ -43,15 +43,15 @@ class DriverService:
         placement = json.loads(response.text)
         return placement['MRData']['RaceTable']['Races']
 
-    def createGraph(self, df, row):
-        height = list(map(int,df[row][1:]))
+    def createGraph(self, placements, row):
+        height = list(map(int,placements[row][1:]))
         bars = tuple(range(1,len(height)+1))
         y_pos = np.arange(len(bars))
         plt.figure()
         plt.bar(y_pos, height)
         plt.xticks(y_pos, bars)
         plt.yticks(range(1,21), range(1,21))
-        plt.title(df[row][:1])
+        plt.title(placements[row][0])
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
