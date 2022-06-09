@@ -88,7 +88,7 @@ def driversByYear() -> str:
     for i in range(len(driverPlacements)):
         graphs.append(ds.createGraph(driverPlacements, i))
     graphs = graphs[::-1] # invert array to match driverPlacementAvgs position
-    return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame, graphs=graphs)
+    return render_template(template_name_or_list='pages/driversResult.html', result=driverPlacementAvgs, placements=placementsFrame, graphs=graphs, year=year)
 
 
 if __name__ == "__main__":
