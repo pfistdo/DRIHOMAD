@@ -200,8 +200,10 @@ def calculateAllSeasons():
 
     # create graph for all seasons with ratio
     graph = ds.createAllSeasonsGraph(yearRatios)
+
+    allSeasonsAvg = yearRatios.ratio.sum() / len(yearRatios.index)
     
-    return render_template(template_name_or_list='pages/allSeasonsResult.html', graph=graph, under=seasonsUnder, equal=seasonsEqual, above=seasonsAbove)
+    return render_template(template_name_or_list='pages/allSeasonsResult.html', graph=graph, under=seasonsUnder, equal=seasonsEqual, above=seasonsAbove, average=allSeasonsAvg)
 
 if __name__ == "__main__":
     app.run()

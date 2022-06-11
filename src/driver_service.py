@@ -72,7 +72,7 @@ class DriverService:
         plt.axhline(y = 0.5, color = 'r', linestyle = '-')
         plt.axhline(y = allSeasonsAvg, color = 'g', linestyle = '--')
         plt.title('Home advantage ratio for all seasons')
-        plt.xlabel('Year')
+        plt.xlabel('Season')
         plt.ylabel('Ratio') 
 
         buf = BytesIO()
