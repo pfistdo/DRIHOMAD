@@ -1,13 +1,56 @@
 {% extends "base.html" %} {% block content %}
-<div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Back to the gridline</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="singleSeason">Calculate single season</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="allSeasons">Calculate all seasons</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron">
   <div class="container">
-    <div class="row md-4">
-      <h2>Completed calculating all seasons!</h2>
-      <p>Total seasons below 50%: {{under}}</p>
-      <p>Total seasons equal 50%: {{equal}}</p>
-      <p>Total seasons above 50%: {{above}}</p>
-      <img alt="seasons graph" src="data:image/png;base64,{{ graph }}" />
+    <div class="row">
+      <h1>//DRIHOMAD</h1>
+      <h1>Home advantage calculation from all Formula 1 seasons</h1>
     </div>
   </div>
-</div>
+
+  <div class="container">
+    <div class="row md-4">
+      <h2>Explanation</h2>
+      <p>The home advantage is calculated with a ratio. The ratio consists of all drivers with a home grandprix in a season<br />
+        The ratio is calculated by comparing the drivers who had a better placement in their home grandprix to all the drivers with a home grandprix in that season.</p>
+      <p>This means in short: <br />
+         Home advantage ratio = Total drivers with home grandprix in one season / Drivers with a better placement at home in that season.</p>
+    </div>
+    <div class="row md-4">
+      <h2>Statistics:</h2>
+      <ul>
+        <li>Total seasons under 50%: {{under}}</li>
+        <li>Total seasons equal 50%: {{equal}}</li>
+        <li>Total seasons above 50%: {{above}}</li>
+        <li>Average home advantage ratio: {{average|round(2)}}</li>
+      </ul>
+    </div>
+    <div class="row md-4">
+      <h2>Detailed statistics:</h2>
+      <img alt="seasons graph" src="data:image/png;base64,{{ graph }}" />
+    </div>
+    <div class="row md-4">
+      <h3>Explanation of graph</h3>
+      <ul>
+        <li><b>Blue line:</b> Home advantage ratio in one season</li>
+        <li><b>Red line:</b> 50% Home advantage treshold</li>
+        <li><b>Green line:</b> Average home advantage ratio</li>
+      </ul>
+    </div>
+  </div>
 {% endblock %}
