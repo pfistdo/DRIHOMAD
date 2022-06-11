@@ -109,7 +109,7 @@ def calculateAllSeasons():
             f.write(f"{'year,ratio'}")
     allSeasons = pd.read_csv(file)
     allSeasons = pd.DataFrame(allSeasons)
-    for season in ds.getAllSeasons():
+    for season in ds.getAllSeasons()[:-1]:
         year = season['season']
         if int(year) not in allSeasons.values:
             print(f"{'Year '}{year}{' did not exist in csv'}")
