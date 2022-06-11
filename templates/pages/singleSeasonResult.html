@@ -7,6 +7,7 @@
     </div>
   </div>
 
+  <p>Home advantage ratio: <b>{{ratio*100}}%</b></p>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -21,9 +22,9 @@
       {% for ind in result.index: %}
       <tr>
         <td>{{result['Driver'][ind]}}</td>
-        <td>{{result['Average placement'][ind]|round|int}}</td>
-        <td>{{result['Home placement'][ind]|round|int}}</td>
-        <td>{% if result['Average placement'][ind]|round|int > result['Home placement'][ind]|round|int %} Yes {% else %} No {% endif %}</td>
+        <td>{{result['Average placement'][ind]|round(2)}}</td>
+        <td>{{result['Home placement'][ind]|round(2)}}</td>
+        <td>{% if result['Average placement'][ind]|round(2) > result['Home placement'][ind]|round(2) %} Yes {% else %} No {% endif %}</td>
         <td>
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#driver{{ind}}">Show details</button>
         </td>

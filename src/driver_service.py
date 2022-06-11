@@ -43,15 +43,37 @@ class DriverService:
         placement = json.loads(response.text)
         return placement['MRData']['RaceTable']['Races']
 
-    def createGraph(self, placements, row):
+    def getAllSeasons(self):
+        url = f"https://ergast.com/api/f1/seasons.json?limit=100"
+        response = requests.get(url)
+        seasons = json.loads(response.text)
+        return seasons['MRData']['SeasonTable']['Seasons']
+
+    def createDriverGraph(self, placements, row):
         height = list(map(int,placements[row][1:]))
         bars = tuple(range(1,len(height)+1))
         y_pos = np.arange(len(bars))
+        
         plt.figure()
         plt.bar(y_pos, height)
         plt.xticks(y_pos, bars)
         plt.yticks(range(1,21), range(1,21))
         plt.title(placements[row][0])
+
+        buf = BytesIO()
+        plt.savefig(buf, format="png")
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+        return data
+
+    def createAllSeasonsGraph(self, df):
+        allSeasonsAvg = df.ratio.sum() / len(df.index)
+        plt.figure()
+        plt.plot(df.year, df.ratio)
+        plt.axhline(y = 0.5, color = 'r', linestyle = '-')
+        plt.axhline(y = allSeasonsAvg, color = 'g', linestyle = '--')
+        plt.title('Home advantage ratio for all seasons')
+        plt.xlabel('Year')
+        plt.ylabel('Ratio') 
 
         buf = BytesIO()
         plt.savefig(buf, format="png")

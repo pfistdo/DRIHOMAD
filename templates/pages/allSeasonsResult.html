@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block content %}
+<div>
+  <div class="container">
+    <div class="row md-4">
+      <h2>Completed calculating all seasons!</h2>
+      <p>Total seasons below 50%: {{under}}</p>
+      <p>Total seasons equal 50%: {{equal}}</p>
+      <p>Total seasons above 50%: {{above}}</p>
+      <img alt="seasons graph" src="data:image/png;base64,{{ graph }}" />
+    </div>
+  </div>
+</div>
+{% endblock %}
