@@ -59,6 +59,8 @@ class DriverService:
         plt.xticks(y_pos, bars)
         plt.yticks(range(1,21), range(1,21))
         plt.title(placements[row][0])
+        plt.xlabel('Race')
+        plt.ylabel('Placement') 
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
